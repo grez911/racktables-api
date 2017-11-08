@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-Requisites for database connection
+Requisites for a database connection.
 '''
 
 host = '127.0.0.1'
