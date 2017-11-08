@@ -35,9 +35,9 @@ def db_query_all(query):
     db_close(dbconn, dbcursor)
     return result
 
-def get_all_objects():
-    '''Get all objects from racktables objects page.'''
-    sqlresult = db_query_all("SELECT name FROM Object")
+def get_all_servers():
+    '''Get all servers from racktables objects page.'''
+    sqlresult = db_query_all("SELECT name FROM Object WHERE objtype_id=4")
     result = []
     for i in sqlresult:
         result.append(i[0])
@@ -49,7 +49,7 @@ def pretty_print(array):
         print(i)
 
 def main():
-    pretty_print(get_all_objects())
+    pretty_print(get_all_servers())
 
 if __name__ == "__main__":
     main()
