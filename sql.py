@@ -41,7 +41,7 @@ def db_query_all(query):
     db_close(dbconn, dbcursor)
     return result
 
-def get_all_servers():
+def get_servers():
     '''Get all servers from racktables objects page.'''
     return db_query_all("SELECT name FROM Object WHERE objtype_id=4")
 
