@@ -22,8 +22,11 @@ def print_array(array):
 
 def main():
     parser = argparse.ArgumentParser(description="A CLI API for racktables database.")
-    parser.add_argument('command', choices=['get_servers', 'get_hdds'], help="Command")
+    parser.add_argument('command', choices=['get_servers', 'get_hdds'], help="Command.")
+    parser.add_argument('-s', '--server', help="Server for the command.")
     args = parser.parse_args()
+    if args.command == 'get_hdds' and args.server is None:
+        parser.error("get_hdds requires --server or -s")
     if args.command == 'get_servers':
         print_array(get_servers())
 
