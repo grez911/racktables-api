@@ -78,7 +78,7 @@ def get_empty_attr_id(name, server):
             pass
 
 def get_attr_values(attr, server):
-    '''Return all values for a given attribute for server.'''
+    '''Return all values for a given attribute for the server.'''
     result = []
     for attr_id in get_attr_ids(attr):
         try:
@@ -96,7 +96,7 @@ def get_attr_values(attr, server):
     return result
 
 def add_attr_value(attr, server, value):
-    '''Add a hardware into server.'''
+    '''Add a hardware into the server.'''
     try:
         attr_id = get_empty_attr_id(attr, server)
         sql = ("SELECT dict_key FROM Dictionary WHERE dict_value = '{}'"
@@ -106,6 +106,36 @@ def add_attr_value(attr, server, value):
         sql = ("INSERT INTO AttributeValue "
                "(object_id, object_tid, attr_id, uint_value) "
                "VALUES ({}, 4, {}, {})".format(server_id, attr_id, uint_value))
+        db_commit(sql)
+        print('OK')
+    except Exception as e:
+        print('Error: {}'.format(e))
+
+def get_last_nonempty_attr_id(attr, server, value):
+    '''Return id of the last nonempty attribute for a given server.'''
+    for attr_id in reversed(get_attr_ids(attr)):
+        try:
+            sql = ("SELECT dict_key FROM Dictionary WHERE dict_value = '{}'"
+               .format(value))
+            uint_value = db_query_all(sql)[0]
+            server_id = get_server_id(server)[0]
+            sql = ("SELECT * FROM AttributeValue WHERE "
+                   "object_id = {} AND attr_id= {} AND uint_value = {}"
+                   .format(server_id, attr_id, uint_value))
+            query = db_query_all(sql)
+            if query != []:
+                return attr_id
+        except:
+            pass
+
+def del_attr_value(attr, server, value):
+    '''Remove a hardware from the server.'''
+    try:
+        attr_id = get_last_nonempty_attr_id(attr, server, value)
+        server_id = get_server_id(server)[0]
+        sql = ("DELETE FROM AttributeValue "
+               "WHERE attr_id = {} AND object_id = {}"
+               .format(attr_id, server_id))
         db_commit(sql)
         print('OK')
     except Exception as e:

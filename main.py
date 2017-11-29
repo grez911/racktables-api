@@ -61,5 +61,9 @@ def main():
         if args.arg in ['HDD', 'CPU']:
             sql.add_attr_value(args.arg, args.server, args.value)
 
+    if args.command == 'del':
+        if args.arg in ['HDD', 'CPU']:
+            sql.del_attr_value(args.arg, args.server, args.value)
+
 if __name__ == "__main__":
     main()
