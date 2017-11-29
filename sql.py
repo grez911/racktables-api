@@ -106,8 +106,7 @@ def add_attr_value(attr, server, value):
         sql = ("INSERT INTO AttributeValue "
                "(object_id, object_tid, attr_id, uint_value) "
                "VALUES ({}, 4, {}, {})".format(server_id, attr_id, uint_value))
-        # print(sql)
-        print(db_commit(sql))
+        db_commit(sql)
         print('OK')
     except Exception as e:
         print('Error: {}'.format(e))
