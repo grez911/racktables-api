@@ -61,6 +61,8 @@ def get_server_id(name):
 
 def get_attr_ids(name):
     '''Return ids of given attribute name.'''
+    if name == 'OS':
+        name = "SW type"
     sql = "SELECT id FROM Attribute WHERE name LIKE '%{}%'".format(name)
     result = db_query_all(sql)
     return result
@@ -94,6 +96,14 @@ def get_attr_values(attr, server):
                 result.extend(db_query_all(sql))
         except:
             pass
+        if attr == 'OS':
+            result = clean_OS_output(result)
+    return result
+
+def clean_OS_output(array):
+    '''Remove unnecessary information from OS names.'''
+    result = [re.sub(".*%GSKIP%", "", elem) for elem in array]
+    result = [re.sub(" \|.*", "", elem) for elem in result]
     return result
 
 def get_available_values(attr):
@@ -105,11 +115,11 @@ def get_available_values(attr):
         chapter_id = 10000
     if attr == 'OS':
         chapter_id = 13
-    sql = "SELECT dict_value FROM Dictionary WHERE chapter_id = '{}'".format(chapter_id);
+    sql = ("SELECT dict_value FROM Dictionary WHERE chapter_id = '{}'"
+           .format(chapter_id))
     result.extend(db_query_all(sql))
     if attr == 'OS':
-        result = [re.sub(".*%GSKIP%", "", elem) for elem in result]
-        result = [re.sub(" \|.*", "", elem) for elem in result]
+        result = clean_OS_output(result)
     return result
 
 def add_attr_value(attr, server, value):
@@ -123,6 +133,22 @@ def add_attr_value(attr, server, value):
         sql = ("INSERT INTO AttributeValue "
                "(object_id, object_tid, attr_id, uint_value) "
                "VALUES ({}, 4, {}, {})".format(server_id, attr_id, uint_value))
+        db_commit(sql)
+        print('OK')
+    except Exception as e:
+        print('Error: {}'.format(e))
+
+def set_attr_value(attr, server, value):
+    '''Update the value of the specified attribute.'''
+    try:
+        attr_id = get_attr_ids(attr)[0]
+        server_id = get_server_id(server)[0]
+        sql = ("SELECT dict_key FROM Dictionary WHERE dict_value LIKE '%{}%'"
+               .format(value))
+        dict_key = db_query_all(sql)[0]
+        sql = ("UPDATE AttributeValue SET uint_value = {} "
+               "WHERE object_id = {} AND attr_id = {}"
+               .format(dict_key, server_id, attr_id))
         db_commit(sql)
         print('OK')
     except Exception as e:

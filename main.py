@@ -51,7 +51,7 @@ def main():
     if args.command == 'get':
         if args.arg.lower() == 'server':
             print_array(sql.get_servers())
-        if args.arg in ['HDD', 'CPU']:
+        if args.arg in ['HDD', 'CPU', 'OS']:
             print_array(sql.get_attr_values(args.arg, args.server))
         # if args.arg == 'FQDN':
             # print_array(sql.get_fqdn(args.server))
@@ -63,6 +63,10 @@ def main():
     if args.command == 'del':
         if args.arg in ['HDD', 'CPU']:
             sql.del_attr_value(args.arg, args.server, args.value)
+
+    if args.command == 'set':
+        if args.arg in ['OS']:
+            sql.set_attr_value(args.arg, args.server, args.value)
 
 if __name__ == "__main__":
     main()
