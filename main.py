@@ -31,26 +31,25 @@ def main():
             'TAG',
             'PORT',
             'STATUS',
-            'SERVERS'
+            'SERVER'
         ], type=str.upper
     )
     parser.add_argument('-s', '--server', help="Server for the command.")
     parser.add_argument('-v', '--value', help="Value for the command.")
     args = parser.parse_args()
 
-    if (args.arg in
-        ['HDD', 'CPU', 'FQDN', 'OS', 'TAG', 'PORT', 'STATUS']
-        and args.server is None):
-        parser.error("{} requires --server or -s option."
-            .format(args.arg))
-
     if (args.command in ['add', 'del', 'set']
         and args.value is None):
         parser.error("{} requires --value or -v option."
             .format(args.arg))
+
+    if (args.arg in
+        ['HDD', 'CPU', 'OS', 'TAG', 'PORT', 'STATUS']
+        and args.server is None):
+        print_array(sql.get_available_values(args.arg))
     
     if args.command == 'get':
-        if args.arg.lower() == 'servers':
+        if args.arg.lower() == 'server':
             print_array(sql.get_servers())
         if args.arg in ['HDD', 'CPU']:
             print_array(sql.get_attr_values(args.arg, args.server))

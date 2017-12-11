@@ -95,6 +95,17 @@ def get_attr_values(attr, server):
             pass
     return result
 
+def get_available_values(attr):
+    '''Return all possible values for a given attribute.'''
+    result = []
+    if attr == 'HDD':
+        chapter_id = 10001
+    if attr == 'CPU':
+        chapter_id = 10000
+    sql = "SELECT dict_value FROM Dictionary WHERE chapter_id = '{}'".format(chapter_id);
+    result.extend(db_query_all(sql))
+    return result
+
 def add_attr_value(attr, server, value):
     '''Add a hardware into the server.'''
     try:
