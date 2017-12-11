@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import MySQLdb
+import re
 import sys
 
 # Local module, see config.py file
@@ -102,8 +103,13 @@ def get_available_values(attr):
         chapter_id = 10001
     if attr == 'CPU':
         chapter_id = 10000
+    if attr == 'OS':
+        chapter_id = 13
     sql = "SELECT dict_value FROM Dictionary WHERE chapter_id = '{}'".format(chapter_id);
     result.extend(db_query_all(sql))
+    if attr == 'OS':
+        result = [re.sub(".*%GSKIP%", "", elem) for elem in result]
+        result = [re.sub(" \|.*", "", elem) for elem in result]
     return result
 
 def add_attr_value(attr, server, value):
