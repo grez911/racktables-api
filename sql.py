@@ -109,7 +109,7 @@ def clean_OS_output(array):
 def get_available_values(attr):
     '''Return all possible values for a given attribute.'''
     result = []
-    if attr == 'HDD':
+    if attr == 'STORAGE':
         chapter_id = 10001
     if attr == 'CPU':
         chapter_id = 10000

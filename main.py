@@ -22,16 +22,14 @@ def main():
         description="A CLI API for racktables database.")
     parser.add_argument('command', help="Command.",
         choices=['get', 'add', 'del', 'set'], type=str.lower)
-    parser.add_argument('arg', help="Object for the command.",
+    parser.add_argument('arg', help="Argument for the command.",
         choices=[
-            'HDD',
+            'STORAGE',
             'CPU',
             'FQDN',
             'OS',
-            'TAG',
-            'PORT',
-            'STATUS',
-            'SERVER'
+            'SERVER',
+            'RAM'
         ], type=str.upper
     )
     parser.add_argument('-s', '--server', help="Server for the command.")
@@ -44,24 +42,24 @@ def main():
             .format(args.arg))
 
     if (args.arg in
-        ['HDD', 'CPU', 'OS', 'TAG', 'PORT', 'STATUS']
+        ['STORAGE', 'CPU', 'OS']
         and args.server is None):
         print_array(sql.get_available_values(args.arg))
     
     if args.command == 'get':
         if args.arg.lower() == 'server':
             print_array(sql.get_servers())
-        if args.arg in ['HDD', 'CPU', 'OS']:
+        if args.arg in ['STORAGE', 'CPU', 'OS']:
             print_array(sql.get_attr_values(args.arg, args.server))
         # if args.arg == 'FQDN':
             # print_array(sql.get_fqdn(args.server))
 
     if args.command == 'add':
-        if args.arg in ['HDD', 'CPU']:
+        if args.arg in ['STORAGE', 'CPU']:
             sql.add_attr_value(args.arg, args.server, args.value)
 
     if args.command == 'del':
-        if args.arg in ['HDD', 'CPU']:
+        if args.arg in ['STORAGE', 'CPU']:
             sql.del_attr_value(args.arg, args.server, args.value)
 
     if args.command == 'set':
