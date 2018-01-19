@@ -36,15 +36,23 @@ def main():
     parser.add_argument('-v', '--value', help="Value for the command.")
     args = parser.parse_args()
 
-    if (args.command in ['add', 'del', 'set']
-        and args.value is None):
-        parser.error("{} {} requires --value or -v option."
+    if (args.command in ['add', 'del']
+        and args.arg in ['FQDN', 'OS', 'SERVER', 'RAM']):
+        print("ERROR: `{}` and `{}` incompatible."
             .format(args.command, args.arg))
+        exit(20)
+
+    if (args.command == 'set'
+        and args.arg in ['STORAGE', 'SERVER', 'CPU']):
+        print("ERROR: `{}` and `{}` arguments are incompatible."
+            .format(args.command, args.arg))
+        exit(20)
 
     if (args.command in ['add', 'del', 'set']
         and args.value is None):
-        parser.error("{} requires --value or -v option."
-            .format(args.arg))
+        print("ERROR: `{} {}` requires --value or -v option."
+            .format(args.command, args.arg))
+        exit(20)
 
     if (args.arg in
         ['STORAGE', 'CPU', 'OS']
