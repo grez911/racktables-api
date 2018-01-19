@@ -24,7 +24,7 @@ def db_connect():
     except:
         print("ERROR: Can't connect to database. Check that MySQL is "
               "accessible via 3306 port with requisites from config.py file.")
-        sys.exit(3)
+        sys.exit(30)
 
 def db_close(dbconn, dbcursor):
     '''Close cursor and database connection.'''
@@ -141,7 +141,7 @@ def add_attr_value(attr, server, value):
         print('OK')
     except Exception as e:
         print('ERROR: {}'.format(e))
-        exit(4)
+        exit(40)
 
 def set_attr_value(attr, server, value):
     '''Update the value of the specified attribute.'''
@@ -158,7 +158,7 @@ def set_attr_value(attr, server, value):
         print('OK')
     except Exception as e:
         print('ERROR: {}'.format(e))
-        exit(4)
+        exit(40)
 
 def get_last_nonempty_attr_id(attr, server, value):
     '''Return id of the last nonempty attribute for a given server.'''
@@ -189,7 +189,7 @@ def del_attr_value(attr, server, value):
         print('OK')
     except Exception as e:
         print('ERROR: {}'.format(e))
-        exit(4)
+        exit(40)
 
 # def get_fqdn(server_name):
     # '''Return FQDN of the server'''

@@ -38,6 +38,11 @@ def main():
 
     if (args.command in ['add', 'del', 'set']
         and args.value is None):
+        parser.error("{} {} requires --value or -v option."
+            .format(args.command, args.arg))
+
+    if (args.command in ['add', 'del', 'set']
+        and args.value is None):
         parser.error("{} requires --value or -v option."
             .format(args.arg))
 
