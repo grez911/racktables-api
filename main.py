@@ -56,6 +56,7 @@ def main():
 
     if args.command == 'add':
         if args.arg in ['STORAGE', 'CPU']:
+            # import pdb; pdb.set_trace()
             sql.add_attr_value(args.arg, args.server, args.value)
 
     if args.command == 'del':

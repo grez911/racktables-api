@@ -63,6 +63,10 @@ def get_attr_ids(name):
     '''Return ids of given attribute name.'''
     if name == 'OS':
         name = "SW type"
+    elif name == 'STORAGE':
+        name = 'HDD'
+    elif name == 'CPU':
+        name = 'CPU%Model'
     sql = "SELECT id FROM Attribute WHERE name LIKE '%{}%'".format(name)
     result = db_query_all(sql)
     return result
