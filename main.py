@@ -29,7 +29,8 @@ def main():
             'FQDN',
             'OS',
             'SERVER',
-            'RAM'
+            'RAM',
+            'STATUS'
         ], type=str.upper
     )
     parser.add_argument('-s', '--server', help="Server for the command.")
@@ -55,14 +56,14 @@ def main():
         exit(20)
 
     if (args.arg in
-        ['STORAGE', 'CPU', 'OS']
+        ['STORAGE', 'CPU', 'OS', 'STATUS']
         and args.server is None):
         print_array(sql.get_available_values(args.arg))
     
     if args.command == 'get':
-        if args.arg.lower() == 'server':
+        if args.arg == 'SERVER':
             print_array(sql.get_servers())
-        if args.arg in ['STORAGE', 'CPU', 'OS']:
+        if args.arg in ['STORAGE', 'CPU', 'OS', 'STATUS']:
             print_array(sql.get_attr_values(args.arg, args.server))
         # if args.arg == 'FQDN':
             # print_array(sql.get_fqdn(args.server))
@@ -77,7 +78,7 @@ def main():
             sql.del_attr_value(args.arg, args.server, args.value)
 
     if args.command == 'set':
-        if args.arg in ['OS']:
+        if args.arg in ['OS', 'STATUS']:
             sql.set_attr_value(args.arg, args.server, args.value)
 
 if __name__ == "__main__":

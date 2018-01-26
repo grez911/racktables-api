@@ -119,6 +119,8 @@ def get_available_values(attr):
         chapter_id = 10000
     if attr == 'OS':
         chapter_id = 13
+    if attr == 'STATUS':
+        chapter_id = 10003
     sql = ("SELECT dict_value FROM Dictionary WHERE chapter_id = '{}'"
            .format(chapter_id))
     result.extend(db_query_all(sql))
@@ -148,7 +150,8 @@ def set_attr_value(attr, server, value):
     try:
         attr_id = get_attr_ids(attr)[0]
         server_id = get_server_id(server)[0]
-        sql = ("SELECT dict_key FROM Dictionary WHERE dict_value LIKE '%{}%'"
+        sql = ("SELECT dict_key FROM Dictionary "
+               "WHERE BINARY dict_value LIKE '%{}%'"
                .format(value))
         dict_key = db_query_all(sql)[0]
         sql = ("UPDATE AttributeValue SET uint_value = {} "
