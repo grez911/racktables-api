@@ -121,6 +121,8 @@ def get_available_values(attr):
         chapter_id = 13
     if attr == 'STATUS':
         chapter_id = 10003
+    if attr == 'SLA':
+        chapter_id = 10004
     sql = ("SELECT dict_value FROM Dictionary WHERE chapter_id = '{}'"
            .format(chapter_id))
     result.extend(db_query_all(sql))
