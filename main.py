@@ -35,7 +35,11 @@ def main():
     )
     parser.add_argument('-s', '--server', help="Server for the command.")
     parser.add_argument('-v', '--value', help="Value for the command.")
-    args = parser.parse_args()
+
+    try:
+        args = parser.parse_args()
+    except SystemExit as e:
+        exit(20)
 
     if (args.command in ['add', 'del']
         and args.arg in ['FQDN', 'OS', 'SERVER', 'RAM']):
