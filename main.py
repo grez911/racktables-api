@@ -33,9 +33,28 @@ def check_params(args):
             .format(args.command, args.arg))
         exit(20)
 
+    if (args.command == 'get'
+        and args.value is not None):
+        print("ERROR: `{}` argument and -v (--value) option are incompatible."
+            .format(args.command))
+        exit(20)
+
     if (args.command in ['add', 'del', 'set']
         and args.value is None):
-        print("ERROR: `{} {}` requires --value or -v option."
+        print("ERROR: `{} {}` requires -v (--value) option."
+            .format(args.command, args.arg))
+        exit(20)
+
+    if (args.command in ['add', 'del', 'set']
+        and args.server is None):
+        print("ERROR: `{} {}` requires -s (--server) option."
+            .format(args.command, args.arg))
+        exit(20)
+
+    if (args.command == 'get'
+        and args.arg == 'RAM'
+        and args.server is None):
+        print("ERROR: `{} {}` requires -s (--server) option."
             .format(args.command, args.arg))
         exit(20)
 
@@ -74,14 +93,13 @@ def main():
     if args.command == 'get':
         if args.arg == 'SERVER':
             print_array(sql.get_servers())
-        if args.arg in ['STORAGE', 'CPU', 'OS', 'STATUS', 'SLA']:
+        if args.arg in ['STORAGE', 'CPU', 'OS', 'STATUS', 'SLA', 'RAM']:
             print_array(sql.get_attr_values(args.arg, args.server))
         # if args.arg == 'FQDN':
             # print_array(sql.get_fqdn(args.server))
 
     if args.command == 'add':
         if args.arg in ['STORAGE', 'CPU']:
-            # import pdb; pdb.set_trace()
             sql.add_attr_value(args.arg, args.server, args.value)
 
     if args.command == 'del':
@@ -89,7 +107,8 @@ def main():
             sql.del_attr_value(args.arg, args.server, args.value)
 
     if args.command == 'set':
-        if args.arg in ['OS', 'STATUS', 'SLA']:
+        if args.arg in ['OS', 'STATUS', 'SLA', 'RAM']:
+            # import pdb; pdb.set_trace()
             sql.set_attr_value(args.arg, args.server, args.value)
 
 if __name__ == "__main__":

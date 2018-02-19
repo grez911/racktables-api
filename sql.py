@@ -67,6 +67,8 @@ def get_attr_ids(name):
         name = 'HDD'
     elif name == 'CPU':
         name = 'CPU%Model'
+    elif name == 'RAM':
+        name = 'DRAM'
     sql = "SELECT id FROM Attribute WHERE name LIKE '%{}%'".format(name)
     result = db_query_all(sql)
     return result
@@ -102,6 +104,8 @@ def get_attr_values(attr, server):
             pass
         if attr == 'OS':
             result = clean_OS_output(result)
+        if attr == 'RAM':
+            return dict_key
     return result
 
 def clean_OS_output(array):
@@ -152,13 +156,18 @@ def set_attr_value(attr, server, value):
     try:
         attr_id = get_attr_ids(attr)[0]
         server_id = get_server_id(server)[0]
-        sql = ("SELECT dict_key FROM Dictionary "
-               "WHERE BINARY dict_value LIKE '%{}%'"
-               .format(value))
-        dict_key = db_query_all(sql)[0]
-        sql = ("UPDATE AttributeValue SET uint_value = {} "
-               "WHERE object_id = {} AND attr_id = {}"
-               .format(dict_key, server_id, attr_id))
+        if attr == 'RAM':
+            sql = ("UPDATE AttributeValue SET uint_value = {} "
+                   "WHERE object_id = {} AND attr_id = {}"
+                   .format(value, server_id, attr_id))
+        else:
+            sql = ("SELECT dict_key FROM Dictionary "
+                   "WHERE BINARY dict_value LIKE '%{}%'"
+                   .format(value))
+            dict_key = db_query_all(sql)[0]
+            sql = ("UPDATE AttributeValue SET uint_value = {} "
+                   "WHERE object_id = {} AND attr_id = {}"
+                   .format(dict_key, server_id, attr_id))
         db_commit(sql)
         print('OK')
     except Exception as e:
