@@ -81,5 +81,5 @@ Set a server FQDN:
 
 * 0 - successful execution;
 * 20 - incorrect number of arguments or their unacceptable combination;
-* 30 - MySQL connaction error;
+* 30 - MySQL connection error;
 * 40 - MySQL query error.
