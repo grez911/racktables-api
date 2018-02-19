@@ -52,7 +52,7 @@ def check_params(args):
         exit(20)
 
     if (args.command == 'get'
-        and args.arg == 'RAM'
+        and args.arg in ['RAM', 'FQDN']
         and args.server is None):
         print("ERROR: `{} {}` requires -s (--server) option."
             .format(args.command, args.arg))
@@ -93,10 +93,9 @@ def main():
     if args.command == 'get':
         if args.arg == 'SERVER':
             print_array(sql.get_servers())
-        if args.arg in ['STORAGE', 'CPU', 'OS', 'STATUS', 'SLA', 'RAM']:
+        if args.arg in ['STORAGE', 'CPU', 'OS', 'STATUS',
+            'SLA', 'RAM', 'FQDN']:
             print_array(sql.get_attr_values(args.arg, args.server))
-        # if args.arg == 'FQDN':
-            # print_array(sql.get_fqdn(args.server))
 
     if args.command == 'add':
         if args.arg in ['STORAGE', 'CPU']:
@@ -107,8 +106,7 @@ def main():
             sql.del_attr_value(args.arg, args.server, args.value)
 
     if args.command == 'set':
-        if args.arg in ['OS', 'STATUS', 'SLA', 'RAM']:
-            # import pdb; pdb.set_trace()
+        if args.arg in ['OS', 'STATUS', 'SLA', 'RAM', 'FQDN']:
             sql.set_attr_value(args.arg, args.server, args.value)
 
 if __name__ == "__main__":

@@ -106,6 +106,11 @@ def get_attr_values(attr, server):
             result = clean_OS_output(result)
         if attr == 'RAM':
             return dict_key
+        if attr == 'FQDN':
+            sql = ("SELECT string_value FROM AttributeValue WHERE "
+                   "object_id = {} AND attr_id = {}".format(server_id, attr_id))
+            result = db_query_all(sql)
+            return result
     return result
 
 def clean_OS_output(array):
@@ -160,6 +165,10 @@ def set_attr_value(attr, server, value):
             sql = ("UPDATE AttributeValue SET uint_value = {} "
                    "WHERE object_id = {} AND attr_id = {}"
                    .format(value, server_id, attr_id))
+        elif attr == 'FQDN':
+            sql = ("UPDATE AttributeValue SET string_value = '{}' "
+                   "WHERE object_id = {} AND attr_id = {}"
+                   .format(value, server_id, attr_id))
         else:
             sql = ("SELECT dict_key FROM Dictionary "
                    "WHERE BINARY dict_value LIKE '%{}%'"
@@ -204,9 +213,3 @@ def del_attr_value(attr, server, value):
     except Exception as e:
         print('ERROR: {}'.format(e))
         exit(40)
-
-# def get_fqdn(server_name):
-    # '''Return FQDN of the server'''
-    # server_id = db_query_all("SELECT id FROM Object WHERE name='{}'"
-        # .format(server_name))[0]
-    # return server_id
