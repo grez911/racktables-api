@@ -79,7 +79,7 @@ Set a server FQDN:
 
 ### Exit codes
 
-0 - successful execution;
-20 - incorrect number of arguments or their unacceptable combination;
-30 - MySQL connaction error;
-40 - MySQL query error.
+* 0 - successful execution;
+* 20 - incorrect number of arguments or their unacceptable combination;
+* 30 - MySQL connaction error;
+* 40 - MySQL query error.
