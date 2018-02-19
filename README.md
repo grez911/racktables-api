@@ -38,6 +38,7 @@ RAM volume:
 
 FQDN of the server:
 /root/bin/racktables-api.py get FQDN --server srv001
+```
 
 ### Modifying information
 
@@ -74,3 +75,10 @@ Change a RAM volume (in MB):
 
 Set a server FQDN:
 /root/bin/racktables-api.py set FQDN -s srv001 -v srv001.example.com
+
+### Exit codes
+
+0 - successful execution;
+20 - incorrect number of arguments or their unacceptable combination;
+30 - MySQL connaction error;
+40 - MySQL query error.
