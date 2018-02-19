@@ -75,6 +75,7 @@ Change a RAM volume (in MB):
 
 Set a server FQDN:
 /root/bin/racktables-api.py set FQDN -s srv001 -v srv001.example.com
+```
 
 ### Exit codes
 
